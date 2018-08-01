@@ -1,6 +1,6 @@
 package com.hp.contaSoft.excel.entities;
 
-import java.util.concurrent.TimeUnit;
+
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,13 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-
-import org.hibernate.annotations.Formula;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.SystemPropertyUtils;
-
 import com.hp.contaSoft.hibernate.dao.service.FileUtilsService;
 import com.hp.contaSoft.hibernate.entities.Base;
 import com.hp.contaSoft.hibernate.entities.PayBookInstance;
@@ -53,7 +46,7 @@ public class PayBookDetails {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
 	/**
 	 * Required Fields
