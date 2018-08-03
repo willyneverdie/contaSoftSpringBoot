@@ -132,7 +132,7 @@ public class PayBookDetails {
 	private double sueldoMensual;
 	
 	@Column
-	private double gratifiacion;
+	private double gratificacion;
 	
 	@Column
 	private double valorHora;
@@ -194,7 +194,7 @@ public class PayBookDetails {
 	}
 	
 	public void calculateGratificacion() {
-		this.gratifiacion = (( this.sueldoBase * 25) / 100 ) / (30 * this.diasTrabajados); 
+		this.gratificacion = (( this.sueldoBase * 25) / 100 ) / (30 * this.diasTrabajados); 
 	}
 
 	public void calculateValorHora() {
@@ -202,7 +202,7 @@ public class PayBookDetails {
 	}
 	
 	public void calculateTotalImponible() {
-		this.totalImponible = this.sueldoMensual +  this.gratifiacion + 
+		this.totalImponible = this.sueldoMensual +  this.gratificacion + 
 				this.bonoProduccion + this.aguinaldo + this.horasExtra; 
 	}
 	

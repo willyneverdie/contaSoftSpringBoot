@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hp.contaSoft.hibernate.dao.repositories.PayBookInstanceRepository;
 import com.hp.contaSoft.hibernate.dao.repositories.TaxpayerRepository;
+import com.hp.contaSoft.hibernate.dao.repositories.TemplateDetailsRepository;
 import com.hp.contaSoft.hibernate.entities.PayBookInstance;
 import com.hp.contaSoft.hibernate.entities.Taxpayer;
+import com.hp.contaSoft.hibernate.entities.TemplateDetails;
 
 @RestController
 @RequestMapping("/api")
@@ -24,6 +26,9 @@ public class APIRestController {
 	
 	@Autowired
 	PayBookInstanceRepository payBookInstanceRepository;
+	
+	@Autowired
+	TemplateDetailsRepository templateDetailsRepository;
 	
 	//get clients
 	@GetMapping("/clients")
@@ -50,4 +55,10 @@ public class APIRestController {
 		return payBookInstanceList;
 	}
 	
+	@GetMapping("/templates")
+	public Iterable<TemplateDetails> getTemplatesDetail() {
+		
+		Iterable<TemplateDetails> templates = templateDetailsRepository.findAll();
+		return templates;
+	}
 }

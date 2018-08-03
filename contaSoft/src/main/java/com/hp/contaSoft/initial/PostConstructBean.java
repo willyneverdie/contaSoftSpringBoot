@@ -20,11 +20,13 @@ import com.hp.contaSoft.hibernate.dao.repositories.AFPFactorsRepository;
 import com.hp.contaSoft.hibernate.dao.repositories.HealthFactorsRepository;
 import com.hp.contaSoft.hibernate.dao.repositories.IUTRepository;
 import com.hp.contaSoft.hibernate.dao.repositories.TaxpayerRepository;
+import com.hp.contaSoft.hibernate.dao.repositories.TemplateDetailsRepository;
 import com.hp.contaSoft.hibernate.entities.AFPFactors;
 import com.hp.contaSoft.hibernate.entities.Address;
 import com.hp.contaSoft.hibernate.entities.HealthFactors;
 import com.hp.contaSoft.hibernate.entities.Taxpayer;
 import com.hp.contaSoft.hibernate.entities.Template;
+import com.hp.contaSoft.hibernate.entities.TemplateDetails;
 import com.hp.contaSoft.hibernate.entities.IUT;
 import com.hp.contaSoft.hibernate.entities.Subsidiary;
 
@@ -43,6 +45,7 @@ public class PostConstructBean implements ApplicationListener<ContextRefreshedEv
 	@Autowired IUTRepository iUTRepository;
 	
 	@Autowired TaxpayerRepository taxpayerRepository;
+	@Autowired TemplateDetailsRepository templateDetailsRepository;
 	
 	//Map with templates
 	public static final Map<String,Map<String,String>> taxpayerTemplates;
@@ -80,6 +83,15 @@ public class PostConstructBean implements ApplicationListener<ContextRefreshedEv
 			iUTRepository.save(new IUT("MENSUAL", 1431870.01d, 2386450.00d, 0.08d,  83048.46d, 4.52d));
 			iUTRepository.save(new IUT("MENSUAL", 2386450.01d, 3341030.00d, 0.135d,  214303.21d, 7.09d));
 			iUTRepository.save(new IUT("MENSUAL", 3341030.00d, 6341030.00d, 0.135d,  214303.21d, 7.09d));
+			
+			
+			templateDetailsRepository.save(new TemplateDetails("RUT","Rut del empleado",true, true));
+			templateDetailsRepository.save(new TemplateDetails("CENTRO_COSTO","Alias de la sucursal",true, true));
+			templateDetailsRepository.save(new TemplateDetails("SUELDO_BASE","Sueldo base del empleado",true, true));
+			templateDetailsRepository.save(new TemplateDetails("DT","Dias trabajados por el empleados en la sucursal",true, true));
+			templateDetailsRepository.save(new TemplateDetails("PREVISION","Nombre de la organizacion previsional afiliada al empleado",true, true));
+			templateDetailsRepository.save(new TemplateDetails("SALUD","Nombre de la organizacion de salud afiliada al empleado",true, true));
+			templateDetailsRepository.save(new TemplateDetails("SALUD_PORCENTAJE","% que el empleado aporta a la organizacion de salud",true, true));
 			
 			
 			/**Initial load*/

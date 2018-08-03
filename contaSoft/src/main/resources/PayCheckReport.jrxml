@@ -5,19 +5,70 @@
 		<![CDATA[]]>
 	</queryString>
 	<field name="id" class="java.lang.Long"/>
+	<field name="rut" class="java.lang.String"/>
+	<field name="sueldo_base" class="java.lang.Double"/>
+	<field name="gratificacion" class="java.lang.Double"/>
+	<field name="horasExtra" class="java.lang.Double"/>
+	<field name="bonoProduccion" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch"/>
+		<band height="19" splitType="Stretch"/>
 	</title>
 	<pageHeader>
 		<band height="35" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="69" splitType="Stretch">
+		<band height="158" splitType="Stretch">
 			<staticText>
-				<reportElement x="11" y="10" width="59" height="30" uuid="9092949e-78de-4a11-8ebe-d6ea91f3a853">
+				<reportElement x="1" y="86" width="240" height="30" uuid="2ccf52dc-462a-44d1-9534-8d9302862c6f"/>
+				<textElement textAlignment="Left">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[REMUNERACION INPONIBLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="87" width="259" height="30" uuid="220ea50a-595a-47ee-b4aa-2f627bf199d3"/>
+				<textElement textAlignment="Left">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[REMUNERACION NO INPONIBLE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="-33" width="299" height="30" uuid="1004578d-8f9a-4674-aef4-c22a0de63c30"/>
+				<textElement textAlignment="Center">
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[LIQUIDACION DE REMUNERACIONES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="2" width="299" height="30" uuid="ba2ce4ed-6fbb-439b-8b69-ad57ae39bdd5"/>
+				<textElement textAlignment="Left">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL TRABAJADOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="33" width="50" height="30" uuid="09ae982f-78bf-48e9-9ba2-2bf84bfdd416">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fac1c078-96a5-4513-b33a-09f8cae8c089"/>
+				</reportElement>
+				<text><![CDATA[rut]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="62" y="32" width="100" height="30" uuid="d70a277a-2e4e-461f-8baf-663cba150976">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fac1c078-96a5-4513-b33a-09f8cae8c089"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{rut}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="116" width="73" height="30" uuid="d00dceac-3ceb-4eb5-a61b-865ede78a04b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="81113409-3aac-473f-af2c-570f40849a29"/>
+				</reportElement>
+				<text><![CDATA[sueldo_base]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="7" y="49" width="59" height="30" uuid="9092949e-78de-4a11-8ebe-d6ea91f3a853">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="30212893-28f5-434c-bfd3-d105167065a2"/>
 				</reportElement>
 				<text><![CDATA[id]]></text>
@@ -25,13 +76,55 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch">
+		<band height="212" splitType="Stretch">
 			<textField>
-				<reportElement x="8" y="10" width="62" height="30" uuid="3fc429ec-498a-4ada-ad72-7ded0e1af269">
+				<reportElement x="82" y="-44" width="100" height="14" uuid="82f1617b-5622-47a7-b972-9c1c0a28c1cd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="81113409-3aac-473f-af2c-570f40849a29"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{sueldo_base}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="62" y="-109" width="62" height="30" uuid="3fc429ec-498a-4ada-ad72-7ded0e1af269">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="30212893-28f5-434c-bfd3-d105167065a2"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="84" y="-30" width="76" height="30" uuid="9fd14875-6855-4366-a265-8b1959a39179">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ff60a6a3-445a-4564-a0ee-579ef1697f94"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{gratificacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="84" y="0" width="78" height="30" uuid="a14d7cdf-67a5-4080-9b57-7ff300f23f57">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dcd3f2af-6f25-4c34-adb1-84fdcc5a567b"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{horasExtra}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="82" y="26" width="78" height="30" uuid="d5a5e840-e6c6-484e-8eb1-71b37fa6494a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d323ca69-092e-4ad9-a3da-8b64f98e60f3"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{bonoProduccion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="-25" width="73" height="30" uuid="5f183993-db17-44bf-aaaf-e2911328fc53">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ff60a6a3-445a-4564-a0ee-579ef1697f94"/>
+				</reportElement>
+				<text><![CDATA[gratificacion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="-1" width="73" height="30" uuid="4da0f5fb-dad8-4486-9d25-a34f186cbb00">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dcd3f2af-6f25-4c34-adb1-84fdcc5a567b"/>
+				</reportElement>
+				<text><![CDATA[horasExtra]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="31" width="73" height="30" uuid="d4bfd479-d0fa-436a-88bd-9271d0684834">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d323ca69-092e-4ad9-a3da-8b64f98e60f3"/>
+				</reportElement>
+				<text><![CDATA[bonoProduccion]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>

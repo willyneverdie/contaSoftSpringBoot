@@ -4,4 +4,5 @@ public interface PrevisionProjection {
 
 	String getPrevision();
 	Double getSuma();
+
 }
