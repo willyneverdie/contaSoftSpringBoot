@@ -15,6 +15,13 @@ import com.hp.contaSoft.hibernate.dao.projection.PrevisionProjection;
 @Repository
 public interface PayBookDetailsRepository extends CrudRepository<PayBookDetails, Long>{
 
+	
+	List<PayBookDetails> findAllByPayBookInstance_Id(Long id); 
+	
+	@Query("from PayBookDetails p where pay_book_instance =:id")
+	List<PayBookDetails> findByPayBookInstanceId(@Param("id") Long id);
+	
+	
 	@Query("select p.prevision as prevision, sum(p.valorPrevision) as suma from PayBookDetails p where pay_book_instance =:id group by prevision")
 	List<PrevisionProjection> getReportByPrevision(@Param("id") Long id);
 

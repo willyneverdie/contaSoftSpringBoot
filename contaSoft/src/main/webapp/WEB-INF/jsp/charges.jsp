@@ -37,6 +37,7 @@ $( document ).ready(function() {
 	<tbody>
 		<tr><td><h2>CLIENTES</h2></td></tr>
 		<c:forEach items="${pbi}" var="PBI">
+		
 		<tr >
 			<td> 		
 			<h3>ClientRut: ${PBI.rut}</h3>
@@ -53,12 +54,17 @@ $( document ).ready(function() {
 			</td>
 			<td><input type="button" value="Ver Detalles" />
 			</td>
+			
 			<td><input type="button" value="Ver Cotizaciones" id="button_details" title="${PBI.id}"/>
 			</td>
-			<td><input type="button" value="Procesar" />
-			</td>
+			
+			<form method="post" action="/process">
+				<td><input type="submit" value="Procesar" /></td>
+				<input type="hidden" name="id" value="${PBI.id}" />
+			</form>
 			
 		</tr>
+		
 		</c:forEach>
 	
 	

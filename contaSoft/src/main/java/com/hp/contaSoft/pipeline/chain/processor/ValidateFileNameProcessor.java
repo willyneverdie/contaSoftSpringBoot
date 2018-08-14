@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import com.hp.contaSoft.hibernate.dao.service.FileUtilsService;
 import com.hp.contaSoft.pipeline.Processor;
 import com.hp.contaSoft.pipeline.Error.PipelineMessage;
-import com.hp.contaSoft.utils.FileUtils;
+
 
 @Component
 public class ValidateFileNameProcessor implements Processor {

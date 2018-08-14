@@ -10,12 +10,15 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.plaf.synth.SynthSplitPaneUI;
 
 import org.apache.commons.collections4.IteratorUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //import org.apache.poi.util.SystemOutLogger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -38,6 +41,7 @@ import com.hp.contaSoft.hibernate.dao.repositories.PayBookDetailsRepository;
 import com.hp.contaSoft.hibernate.dao.repositories.PayBookInstanceRepository;
 import com.hp.contaSoft.hibernate.dao.repositories.TaxpayerRepository;
 import com.hp.contaSoft.hibernate.dao.service.FileUtilsService;
+import com.hp.contaSoft.hibernate.dao.service.ReportUtilsService;
 import com.hp.contaSoft.hibernate.entities.AFPFactors;
 import com.hp.contaSoft.hibernate.entities.Address;
 import com.hp.contaSoft.hibernate.entities.IUT;
@@ -47,7 +51,7 @@ import com.hp.contaSoft.hibernate.entities.Taxpayer;
 import com.hp.contaSoft.hibernate.entities.Template;
 import com.hp.contaSoft.pipeline.PipelineManager;
 import com.hp.contaSoft.pipeline.Error.PipelineMessage;
-import com.hp.contaSoft.utils.FileUtils;
+
 import com.opencsv.CSVReader;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
@@ -63,6 +67,7 @@ import ch.qos.logback.core.net.SyslogOutputStream;
 public class TestController {
 
 	private String saveDirectory = "D:/";
+	public static Logger logger = LoggerFactory.getLogger(TestController.class);;
 	
 	@Autowired
 	PipelineManager pm;
@@ -77,13 +82,15 @@ public class TestController {
 	@Autowired
 	private FileUtilsService fileUtilsService;
 	@Autowired
+	private ReportUtilsService reportUtilsService;
+	@Autowired
 	private IUTRepository iUTRepository;
 	@Autowired
 	private PayBookInstanceRepository payBookInstanceRepository;
 	@Autowired
 	private PayBookDetailsRepository payBookDetailsRepository;
 	
-	
+	/*
 	@RequestMapping("/charges")
 	public String handleCharge(@RequestParam Long id, HttpServletRequest request, Model model) {
 		System.out.println("id="+id);
@@ -98,6 +105,7 @@ public class TestController {
 		
 		return "charges";
 	}
+	*/
 	
 	@RequestMapping("/chargesDetails")
 	public String handleChargeDetails(@RequestParam Long id, HttpServletRequest request, Model model) {
@@ -211,25 +219,46 @@ public class TestController {
 	
 	
 	
+	@RequestMapping(value="/process", method = { RequestMethod.POST, RequestMethod.GET })
+	public String handleProcess(@RequestParam Long id, HttpServletRequest request, Model model) {
+
+		System.out.println("process post");
+		System.out.println("id="+id);
+		
+		List<PayBookDetails> listPBD = payBookDetailsRepository.findByPayBookInstanceId(id);
+		System.out.println("Cantidad de PBI:"+listPBD.size());
+		
+		model.addAttribute("pbd", listPBD);
+		
+		reportUtilsService.generateReports(id);
+		
+		return "resultProcess";
+	}
+	
+
+	@RequestMapping(value="/charges", method = { RequestMethod.POST, RequestMethod.GET })
+	public String handleCharge(@RequestParam Long id, HttpServletRequest request, Model model) {
+
+		System.out.println("charges post");
+		System.out.println("id="+id);
+		
+		List<PayBookInstance> listPBI = (List<PayBookInstance>) payBookInstanceRepository.findAllByTaxpayerIdOrderByVersionDesc(id);
+		System.out.println("Cantidad de PBI:"+listPBI.size());
+		model.addAttribute("pbi", listPBI);
+		
+		return "charges";
+	}
+	
 	@RequestMapping("/")
 	public String doTest(HttpServletRequest request, Model model) {
+		
+		logger.debug("Method '/'");
+		logger.trace("TRACE");
+		logger.info("INFO");
+		logger.warn("WARN");
+		logger.error("error");
+		
 		try {
-			
-			/*//New Address
-			Address address = new Address("Tu Casa","4");
-			Address add = new Address("calle1", "2");
-			Address add2 = new Address("Mi Casa","3");
-			
-			//NewTaxpayer
-			Taxpayer tp = new Taxpayer("Williams SA","15961703-3", address);
-			Taxpayer tp2 = new Taxpayer("Marco SA","15961704-3", add);
-			Taxpayer tp3 = new Taxpayer("Copec SA","15961705-3", add2);
-			
-			tp.setTemplate(new Template("Remu","RUT;CENTRO_COSTO;SUELDO BASE;DT"));
-			
-			taxpayerRepository.save(tp);
-			taxpayerRepository.save(tp2);
-			taxpayerRepository.save(tp3);*/
 			
 			//List Taxpayer
 			List<Taxpayer> taxpayers = (List<Taxpayer>) taxpayerRepository.findAll();

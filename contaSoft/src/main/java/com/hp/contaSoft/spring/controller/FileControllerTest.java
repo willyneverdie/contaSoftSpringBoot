@@ -72,7 +72,7 @@ import com.hp.contaSoft.hibernate.entities.Taxpayer;
 import com.hp.contaSoft.hibernate.entities.Template;
 import com.hp.contaSoft.pipeline.PipelineManager;
 import com.hp.contaSoft.pipeline.Error.PipelineMessage;
-import com.hp.contaSoft.utils.FileUtils;
+
 import com.opencsv.CSVReader;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
@@ -235,9 +235,9 @@ public class FileControllerTest {
 	public ResponseEntity<byte[]> pdfJasper() {
 		
 		//Datasource
-		Iterable<PayBookDetails> pbd = payBookDetailsRepository.getAll();
+		Iterable<IdProjection> pbd = payBookDetailsRepository.getAll();
 		List<PayBookDetails> target = new ArrayList<>();
-		pbd.forEach(target::add);
+		//pbd.forEach(target::add);
 		JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(target);
         
         JasperReport jasperReport = null;
