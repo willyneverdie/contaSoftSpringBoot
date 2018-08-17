@@ -6,6 +6,7 @@ import java.util.Map;
 public class HPConstant {
 
 	public static final String FILE_EXTENSION = "csv";
+	public static final String REPORT_EXTENSION = "pdf";
 	public static final String PAYROLL_FILE_STATUS = "Pendiente";
 	public static final int SLEEP_TIME = 0;
 	

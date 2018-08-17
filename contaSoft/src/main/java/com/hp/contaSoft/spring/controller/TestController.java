@@ -126,9 +126,6 @@ public class TestController {
             Model model
     		) {
          
-		
-		
-		
 		try {
 		
         System.out.println("description: " + request.getParameter("description"));
@@ -163,14 +160,14 @@ public class TestController {
                 
                 pipelineMessageOutput =  pm.execute( pipelineMessageInput);
                 
-                System.out.println(pipelineMessageOutput);
-                
                 if(pipelineMessageOutput.isValid())
                 {
                 	//return succesfull
+                	System.out.println("PIPELINE final VALIDO");
                 }
                 else {
                 	//return error
+                	System.out.println("PIPELINE final INVALIDO");
                 }
 
                 
@@ -225,12 +222,19 @@ public class TestController {
 		System.out.println("process post");
 		System.out.println("id="+id);
 		
-		List<PayBookDetails> listPBD = payBookDetailsRepository.findByPayBookInstanceId(id);
-		System.out.println("Cantidad de PBI:"+listPBD.size());
+		/**
+		 * 0. I NEED TO CHECK WHETHER THE PAYBOOKINSTANCE IS ALREADY PROCESSED 		
+		 */
 		
-		model.addAttribute("pbd", listPBD);
+		/**
+		 * 1. I NEED TO CHANGE THE STATUS OF THE PAYBOOKINSTANCE  		
+		 */
 		
 		reportUtilsService.generateReports(id);
+		
+		List<PayBookDetails> listPBD = payBookDetailsRepository.findByPayBookInstanceId(id);
+		System.out.println("Cantidad de PBI:"+listPBD.size());
+		model.addAttribute("pbd", listPBD);
 		
 		return "resultProcess";
 	}

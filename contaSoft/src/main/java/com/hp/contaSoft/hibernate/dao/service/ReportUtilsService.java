@@ -1,31 +1,19 @@
 package com.hp.contaSoft.hibernate.dao.service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletOutputStream;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
-import com.hp.contaSoft.excel.entities.PayBookDetails;
 import com.hp.contaSoft.hibernate.dao.projection.IdProjection;
 import com.hp.contaSoft.hibernate.dao.repositories.PayBookDetailsRepository;
-import com.hp.contaSoft.pipeline.Error.PipelineMessage;
-
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import com.hp.contaSoft.thread.CheckReportThread;
+import com.hp.contaSoft.thread.CreateReportThread;
 
 /**
  * 
@@ -39,58 +27,57 @@ public class ReportUtilsService {
 	@Autowired
 	PayBookDetailsRepository payBookDetailsRepository;
 	
+	@Autowired
+	FileStorageService fileStorageService;
+	
 	public void generateReports(Long id) {
 		
-		//Get Data
-		List<PayBookDetails> listPBD = payBookDetailsRepository.findByPayBookInstanceId(id);
-		System.out.println("Cantidad de PBI:"+listPBD.size());
+		/***
+		 * Get Data
+		 * we get the values from a list but we need to insert the values one by one
+		 * into another list because of the datasource
+		 */
+		Iterable<IdProjection> pbd = payBookDetailsRepository.getAllbyId(id);
 		
-		Iterable<IdProjection> pbd = payBookDetailsRepository.getAll();
 		List<IdProjection> target = new ArrayList<>();
 		pbd.forEach(target::add);
-
-		//Execute the code for each element in the List
-		for(IdProjection proj: target ) {
-			
-			System.out.println(proj.getId());
-			List<IdProjection> list = new ArrayList<>();
-			list.add(proj);
-			
-			//Add data to the datasource
-			JRBeanCollectionDataSource beanColDataSource = 
-					new JRBeanCollectionDataSource(list);
-			
-			//Load report definition
-			ClassPathResource classPathResource =
-					new ClassPathResource("PayCheckReport.jrxml");
-			
-			//init variables 
-			JasperReport jasperReport = null;
-	        JasperPrint jasperPrint = null;
-			InputStream jasperStream = null;
-			Map<String,Object> params = new HashMap<>();
-			ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-			
-			try {
-				jasperStream = classPathResource.getInputStream();
-				jasperReport = JasperCompileManager.compileReport(jasperStream);
-				jasperPrint = JasperFillManager.fillReport(jasperReport, params, beanColDataSource);
-				//jasperPrint = JasperFillManager.fillReport(jasperReport, params, new JREmptyDataSource());
-				JasperExportManager.exportReportToPdfStream(jasperPrint, outStream);
-
-				byte[] imgByte = outStream.toByteArray();
-
-			 
-			 
-		        			
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (JRException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		
+		ExecutorService service = null;
+		List<Future<Boolean>> reportList = new ArrayList<>();
+		
+		try {
+			service = Executors.newSingleThreadExecutor();
+			//Execute the code for each element in the List
+			for(IdProjection proj: target ) {
+				
+				System.out.println("id="+proj.getId());
+				String fileName = proj.getId().toString() + proj.getRut();
+				List<IdProjection> list = new ArrayList<>();
+				list.add(proj);
+				
+				//new Thread( new CreateReportThread(fileName, id, list) ).start();
+				//service.execute( new CreateReportThread(fileName, id, list) );
+				//reportList.add();
+				reportList.add( service.submit( new CreateReportThread(fileName, id, list)) );
+				
+ 
 			}
+			
+			//thread to check the responses
+			service.submit(  new CheckReportThread(reportList));
 		}
+		
+		
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			
+			if(service != null) service.shutdown();
+		}
+		
+		
+		
 		
 				
 	

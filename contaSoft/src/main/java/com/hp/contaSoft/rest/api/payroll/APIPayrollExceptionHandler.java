@@ -21,7 +21,7 @@ public class APIPayrollExceptionHandler {
 		error.setStatus(HttpStatus.BAD_REQUEST.value());
 		error.setMessage(exc.getMessage());
 		error.setTimeStamp(System.currentTimeMillis());
-		
+		exc.printStackTrace();
 		//return response entity
 		return new ResponseEntity<>( error, HttpStatus.BAD_REQUEST);
 	}

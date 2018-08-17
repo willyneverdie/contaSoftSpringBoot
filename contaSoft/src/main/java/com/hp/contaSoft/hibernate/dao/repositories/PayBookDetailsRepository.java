@@ -30,4 +30,10 @@ public interface PayBookDetailsRepository extends CrudRepository<PayBookDetails,
 			+ "p.gratificacion as gratificacion, p.horasExtra as horasExtra, p.bonoProduccion as bonoProduccion "
 			+ "from PayBookDetails p")
 	List<IdProjection> getAll();
+	
+	@Query("select p.id as id, p.rut as rut, p.sueldoBase as sueldo_base,"
+			+ "p.gratificacion as gratificacion, p.horasExtra as horasExtra, p.bonoProduccion as bonoProduccion "
+			+ "from PayBookDetails p where pay_book_instance =:id")
+	List<IdProjection> getAllbyId(@Param("id") Long id);
+	
 }

@@ -1,13 +1,9 @@
 package com.hp.contaSoft.hibernate.dao.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.multipart.MultipartFile;
-
-import com.hp.contaSoft.configuration.FileStorageProperties;
-import com.hp.contaSoft.exceptions.FileStorageException;
-import com.hp.contaSoft.exceptions.MyFileNotFoundException;
-
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,11 +11,17 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalTime;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.util.SystemPropertyUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.hp.contaSoft.configuration.FileStorageProperties;
+import com.hp.contaSoft.exceptions.FileStorageException;
+import com.hp.contaSoft.exceptions.MyFileNotFoundException;
 
 @Service
 public class FileStorageService {
@@ -40,6 +42,26 @@ public class FileStorageService {
         }
     }
 
+    
+    public String storeOutputStream(OutputStream  file, String fileName) {
+    	
+    	FileOutputStream fop = null;
+    	fileName = StringUtils.cleanPath(fileName + ".pdf");
+    	Path targetLocation = this.fileStorageLocation.resolve(fileName);
+    	
+    	File toBeCopied = new File( fileName);
+    	Path path = toBeCopied.toPath();
+    	System.out.println("path="+path);
+    	
+    	try {
+			Files.copy(path, file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return toBeCopied.getPath();
+    }
+    
     public String storeFile(MultipartFile file) {
 
     	LocalTime lt = LocalTime.now(); 
